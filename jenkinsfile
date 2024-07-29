@@ -1,0 +1,25 @@
+pipeline {
+    agent any
+
+    environment {
+        REPO_URL = 'https://github.com/Monusharma2562002/golang.git'
+        BRANCH = 'main'  
+    }
+
+    stages {
+        stage('Clone repository') {
+            steps {
+                git branch: "${BRANCH}", url: "${REPO_URL}"
+            }
+        }
+
+        stage('Build and Run with Docker Compose') {
+            steps {
+                script {
+                    sh 'docker-compose down' 
+                    sh 'docker-compose up --build -d'
+                }
+            }
+        }
+    }
+}
